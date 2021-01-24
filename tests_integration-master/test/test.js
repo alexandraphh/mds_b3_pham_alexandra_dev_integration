@@ -25,3 +25,42 @@ const getCurrentCulor = () => {
 }
 // <-- FIN
 
+it('should return all colors', function (done) {
+    chai.request(app).get('/colors').end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.an('object');
+        expect(res.body.results).to.be.an('array');
+        expect(response.body.results).to.eql(['RED', 'GREEN', 'BLUE']);
+        done();
+      });
+    }); 
+
+it('should return bad request', function (done) {
+    chai.request(app).get('/colo').end((err, res) => {
+        expect(res).to.have.status(404)
+        done();
+      });
+    }); 
+
+it('should add new color', function (done) {
+    chai.request(app).post('/colors').send({color:"GREY"}).end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res).to.be.json;
+        expect(res.body).to.be.an("object");
+        expect(res.body.results).to.be.an('array');
+        expect(res.body.results).include("GREY");
+        done();
+      });
+    });
+  
+it('should return new color list Request', function (done) {
+    chai.request(app).get('/colors').end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.an('object');
+        expect(res.body.results).to.be.an('array');
+        expect(res.body.results).include("GREY");
+        done();
+      });
+    }); 
